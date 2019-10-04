@@ -5,12 +5,13 @@ import {
   Header,
   Body,
   Title,
-  Content
+  Content,
+  Text
 } from 'native-base';
 
 import Textbox from './components/inputField';
 import TodoList from './components/todoList';
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import firebase from 'firebase';
 
 var firebaseConfig = {
@@ -29,13 +30,21 @@ export default class App extends React.Component {
       todos: [],
       value: ''
     }
+    firebase.database().ref("todos").on('value', data => {
+      if (data.val() && data.val().value) {
+        this.setState({ todos: data.val().value })
+      }
+    })
     this.handleChange = this.handleChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleClearList = this.handleClearList.bind(this);
   }
 
   handleChange = text => this.setState({ value: text });
 
   addToDatabase = todos => firebase.database().ref('todos').set({ value: todos });
+
+  handleClearList = () => this.setState({ todos: [] }, () => this.addToDatabase(this.state.todos))
 
   handleDelete(index) {
     let arr = this.state.todos;
@@ -47,38 +56,42 @@ export default class App extends React.Component {
   handleSubmit() {
     let arr = [];
     arr.push(this.state.value);
-    this.setState({ todos: this.state.todos.concat(arr) },
+    this.setState({ todos: this.state.todos.concat(arr), value: '' },
       () => this.addToDatabase(this.state.todos));
   }
 
   render() {
     return (
-      <View>
+      <Container>
         <Content>
           <Header>
             <Body>
-              <Title>React Todo App</Title>
+              <Title>React-Native Todo App</Title>
             </Body>
           </Header>
-          <Textbox handleChange={this.handleChange} />
+          <Textbox 
+          handleChange={this.handleChange} 
+          value={this.state.value}
+          />
           <Button block primary
-            style={styles.Button}
+            style={styles.button}
             onPress={() => this.handleSubmit()}
           >
             <Text style={styles.btnText}>Add</Text>
           </Button>
-          <TodoList handleDelete={this.handleDelete} />
+          <TodoList
+            handleDelete={this.handleDelete}
+            handleClearList={this.handleClearList}
+            todos={this.state.todos}
+          />
         </Content>
-        {/* <Button block primary>
-          <Text>Clear List</Text>
-        </Button> */}
-      </View>
+      </Container>
     );
   }
 };
 
 const styles = StyleSheet.create({
-  Button: {
+  button: {
     margin: 15,
   },
   btnText: {

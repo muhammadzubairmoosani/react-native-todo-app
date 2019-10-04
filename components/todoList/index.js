@@ -1,35 +1,33 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Button, Icon, Text } from 'native-base';
-import firebase from 'firebase';
+import { Button, Icon, Text, Content, Container } from 'native-base';
 
 export default class TodoList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            todos: []
-        }
-        firebase.database().ref("todos").on('value', data => {
-            if (data.val() && data.val().value) {
-                this.setState({ todos: data.val().value })
-            }
-        })
-    }
-
     render() {
+        const { handleDelete, handleClearList, todos } = this.props;
         return (
-            <View >
-                {/* {this.state.todos.map((item, index) =>
-                    <View style={styles.container}>
-                        <Text style={styles.todoText}>{item}</Text>
-                        <Button danger
-                            onPress={() => this.props.handleDelete(index)}
+            <Container>
+                <Content>
+                    {todos.map((item, index) =>
+                        <View style={styles.container}>
+                            <Text style={styles.todoText}>{item}</Text>
+                            <Button danger onPress={() => handleDelete(index)}>
+                                <Icon name='md-trash' />
+                            </Button>
+                        </View>
+                    )}
+                    {todos.length > 0 ?
+                        <Button
+                            block info
+                            style={styles.button}
+                            onPress={() => handleClearList()}
                         >
-                            <Icon name='md-trash' />
+                            <Text style={styles.btnText}>Clear List</Text>
                         </Button>
-                    </View>
-                )} */}
-            </View>
+                        : null
+                    }
+                </Content>
+            </Container>
         );
     }
 }
@@ -46,5 +44,13 @@ const styles = StyleSheet.create({
     },
     todoText: {
         marginLeft: 5
+    },
+    button: {
+        margin: 15,
+    },
+    btnText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 15,
     }
 })
