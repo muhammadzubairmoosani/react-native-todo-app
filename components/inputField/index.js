@@ -3,22 +3,65 @@ import {
     Form,
     Item,
     Input,
-    Label
+    Label,
+    Button,
+    Text
 } from 'native-base';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
 
-export default class Textbox extends React.Component {
+class Textbox extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: ''
+        }
+    }
+    handleChange = text => this.setState({ value: text });
+
+    handleSubmit() {
+        this.props.sendDataToDatabase(this.state.value);
+        this.setState({ value: '' })
+    }
+
     render() {
-        const { handleChange, value } = this.props;
         return (
             <View>
                 <Form>
                     <Item floatingLabel>
                         <Label>Add A Todo Item</Label>
-                        <Input value={value} onChangeText={(text) => handleChange(text)} />
+                        <Input value={this.state.value} onChangeText={(text) => this.handleChange(text)} />
                     </Item>
                 </Form>
-            </View>
+                <Button block primary
+                    style={styles.button}
+                    onPress={() => this.handleSubmit()}
+                >
+                    <Text style={styles.btnText}>Add</Text>
+                </Button>
+            </View >
         );
     }
 }
+const mapDispatchToProps = dispatch => {
+    return {
+        sendDataToDatabase: (data) => dispatch({ type: 'SEND_TO_DATABASE', payload: data })
+    }
+}
+const styles = StyleSheet.create({
+    button: {
+        margin: 15,
+    },
+    btnText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 15,
+    }
+});
+
+function mapStateToProps(state) {
+    return {
+        gState: state
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Textbox)

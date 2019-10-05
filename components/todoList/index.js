@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, Icon, Text, Content, Container } from 'native-base';
+import { connect } from 'react-redux';
 
-export default class TodoList extends React.Component {
+class TodoList extends React.Component {
     render() {
         const { handleDelete, handleClearList, todos } = this.props;
         return (
@@ -16,7 +17,7 @@ export default class TodoList extends React.Component {
                             </Button>
                         </View>
                     )}
-                    {todos.length > 0 ?
+                    {todos.length > 1 ?
                         <Button
                             block info
                             style={styles.button}
@@ -31,6 +32,13 @@ export default class TodoList extends React.Component {
         );
     }
 }
+function mapDispatchToProps(dispatch) {
+    return {
+        handleClearList: () => dispatch({ type: 'CLEAR_LIST' })
+    }
+}
+export default connect(null, mapDispatchToProps)(TodoList)
+
 
 const styles = StyleSheet.create({
     container: {
