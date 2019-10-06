@@ -11,7 +11,7 @@ import TodoList from './components/todoList';
 import store from './store';
 import { Provider } from 'react-redux';
 import firebase from 'firebase';
-
+import { connect } from 'react-redux'
 
 
 class App extends React.Component {
@@ -21,9 +21,10 @@ class App extends React.Component {
       todos: [],
       value: ''
     }
-    firebase.database().ref("todos").on('value', data => {
-      if (data.val() && data.val().value) {
-        this.setState({ todos: data.val().value })
+    firebase.database().ref("todos").once('value', data => {
+      console.warn(data.val())
+      if (data.val()) {
+        this.setState({ todos: data.val() })
       }
     })
     this.handleDelete = this.handleDelete.bind(this);
@@ -51,8 +52,8 @@ class App extends React.Component {
             <Textbox />
             <TodoList
               handleDelete={this.handleDelete}
-              handleClearList={this.handleClearList}
-              todos={this.state.todos}
+              // handleClearList={this.handleClearList}
+              // todos={this.state.todos}
             />
           </Content>
         </Container>
@@ -61,4 +62,9 @@ class App extends React.Component {
   }
 };
 
-export default App
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     addToDatabase: data => dispatch({ type: 'SEND_TO_DATABASE', payload: data })
+//   }
+// }
+export default App;

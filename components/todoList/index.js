@@ -10,14 +10,14 @@ class TodoList extends React.Component {
             <Container>
                 <Content>
                     {todos.map((item, index) =>
-                        <View style={styles.container}>
+                        <View key={index} style={styles.container}>
                             <Text style={styles.todoText}>{item}</Text>
                             <Button danger onPress={() => handleDelete(index)}>
                                 <Icon name='md-trash' />
                             </Button>
                         </View>
                     )}
-                    {todos.length > 1 ?
+                    {todos.length > 0 ?
                         <Button
                             block info
                             style={styles.button}
@@ -28,7 +28,7 @@ class TodoList extends React.Component {
                         : null
                     }
                 </Content>
-            </Container>
+            </Container >
         );
     }
 }
