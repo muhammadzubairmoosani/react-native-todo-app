@@ -9,7 +9,7 @@ import {
 } from 'native-base';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-
+import AddToDatabase from '../../store'
 class Textbox extends React.Component {
     constructor(props) {
         super(props);
@@ -45,7 +45,7 @@ class Textbox extends React.Component {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        sendDataToDatabase: (data) => dispatch({ type: 'SEND_TO_DATABASE', payload: data })
+        sendDataToDatabase: (data) => dispatch(AddToDatabase(data))
     }
 }
 const styles = StyleSheet.create({
@@ -59,9 +59,4 @@ const styles = StyleSheet.create({
     }
 });
 
-function mapStateToProps(state) {
-    return {
-        gState: state
-    }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Textbox)
+export default connect(null, mapDispatchToProps)(Textbox)

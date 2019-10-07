@@ -5,23 +5,22 @@ import { connect } from 'react-redux';
 
 class TodoList extends React.Component {
     render() {
-        const { handleDelete, handleClearList, todos } = this.props;
         return (
             <Container>
                 <Content>
-                    {todos.map((item, index) =>
+                    {this.props.todos.map((item, index) =>
                         <View key={index} style={styles.container}>
                             <Text style={styles.todoText}>{item}</Text>
-                            <Button danger onPress={() => handleDelete(index)}>
+                            <Button danger onPress={() => this.props.handleDelete(index)}>
                                 <Icon name='md-trash' />
                             </Button>
                         </View>
                     )}
-                    {todos.length > 0 ?
+                    {this.props.todos.length > 0 ?
                         <Button
                             block info
                             style={styles.button}
-                            onPress={() => handleClearList()}
+                            onPress={() => this.props.handleClearList()}
                         >
                             <Text style={styles.btnText}>Clear List</Text>
                         </Button>
@@ -32,12 +31,21 @@ class TodoList extends React.Component {
         );
     }
 }
-function mapDispatchToProps(dispatch) {
+function mapStateToProps(state) {
     return {
-        handleClearList: () => dispatch({ type: 'CLEAR_LIST' })
+        todos: state
     }
 }
-export default connect(null, mapDispatchToProps)(TodoList)
+
+function mapDispatchToProps(dispatch) {
+    return {
+        handleClearList: () => dispatch({ type: 'CLEAR_LIST' }),
+        handleDelete: data => dispatch({ type: 'DELETE', payload: data })
+
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList)
 
 
 const styles = StyleSheet.create({
