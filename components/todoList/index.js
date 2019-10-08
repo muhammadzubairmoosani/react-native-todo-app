@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Button, Icon, Text, Content, Container } from 'native-base';
+import { Button, Icon, Text, Content, Container, Spinner } from 'native-base';
 import { connect } from 'react-redux';
 import Middleware from '../../store/middleware/middleware'
 
@@ -30,7 +30,7 @@ class TodoList extends React.Component {
                             : null
                         }
                     </Content>
-                    : <Text>Data is Loading</Text>}
+                    : <Spinner color="blue" />}
             </Container >
         );
     }

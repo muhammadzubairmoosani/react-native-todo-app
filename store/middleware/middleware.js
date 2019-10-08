@@ -4,31 +4,40 @@ import firebase from '../../config/firebase';
 var todos = [];
 export default class Middleware {
     static addToDatabase(data) {
-        return dispatch => {
+        return () => {
             todos.push(data);
             firebase.database().ref('todos').set(todos)
-            firebase
-                .database()
-                .ref('todos')
-                .once('value', data =>
-                    dispatch(Action.newItem(data.val()))
-                )
+            this.getDataFromDatabase();
         }
     }
     static deleteItem(data) {
-        return dispatch => {
+        return () => {
             let arr = todos;
             arr.splice(data, 1);
             todos = arr;
             firebase.database().ref('todos').set(todos);
-            dispatch(Action.deteleItem(todos));
+            firebase.database.ref('todos').on('value', data => {
+                console.warn(data)
+
+            })
+            // .then(snapshot => console.warn(snapshot))
+            // .catch(err => console.warn(err))
         }
     }
     static clearList() {
-        return dispatch => {
+        return () => {
             todos = [];
-            firebase.database().ref('todos').set(todos);
-            dispatch(Action.clearList(todos));
+            firebase.database().ref('todos').set(todos)
+            this.getDataFromDatabase()
+            // .then(value => dispatch(Action.clearList(value)))
+            // .catch(err => console.warn(err));
         }
     }
+    static getDataFromDatabase() {
+        //     return dispatch => {
+
+        //     }
+    }
 }
+
+// dispatch(Action.newItem(value.val())

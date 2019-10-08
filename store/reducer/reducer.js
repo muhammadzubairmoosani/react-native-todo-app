@@ -1,12 +1,10 @@
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
 import {
     NEW_ITEM,
     DELETE_ITEM,
     CLEAR_LIST
 } from '../constants';
 
-function reducer(state = [], action) {
+export default function reducer(state = [], action) {
     switch (action.type) {
         case NEW_ITEM:
         case DELETE_ITEM:
@@ -16,6 +14,3 @@ function reducer(state = [], action) {
             return state;
     }
 }
-const store = createStore(reducer, applyMiddleware(thunk));
-
-export default store;

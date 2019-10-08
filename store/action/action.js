@@ -6,6 +6,7 @@ import {
 
 export default class Action {
     static newItem(data) {
+        // console.warn(data)
         return {
             type: NEW_ITEM,
             payload: data
