@@ -9,7 +9,7 @@ import {
 } from 'native-base';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import AddToDatabase from '../../store'
+import Middleware from '../../store/middleware/middleware'
 class Textbox extends React.Component {
     constructor(props) {
         super(props);
@@ -20,7 +20,7 @@ class Textbox extends React.Component {
     handleChange = text => this.setState({ value: text });
 
     handleSubmit() {
-        this.props.sendDataToDatabase(this.state.value);
+        this.props.sendData(this.state.value);
         this.setState({ value: '' })
     }
 
@@ -45,9 +45,10 @@ class Textbox extends React.Component {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        sendDataToDatabase: (data) => dispatch(AddToDatabase(data))
+        sendData: (data) => dispatch(Middleware.addToDatabase(data))
     }
 }
+
 const styles = StyleSheet.create({
     button: {
         margin: 15,

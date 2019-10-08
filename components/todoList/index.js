@@ -2,25 +2,27 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, Icon, Text, Content, Container } from 'native-base';
 import { connect } from 'react-redux';
+import Middleware from '../../store/middleware/middleware'
 
 class TodoList extends React.Component {
     render() {
+        const { todos, handleDelete, handleClearList } = this.props;
         return (
             <Container>
                 <Content>
-                    {this.props.todos.map((item, index) =>
+                    {todos.map((item, index) =>
                         <View key={index} style={styles.container}>
                             <Text style={styles.todoText}>{item}</Text>
-                            <Button danger onPress={() => this.props.handleDelete(index)}>
+                            <Button danger onPress={() => handleDelete(index)}>
                                 <Icon name='md-trash' />
                             </Button>
                         </View>
                     )}
-                    {this.props.todos.length > 0 ?
+                    {todos.length > 0 ?
                         <Button
                             block info
                             style={styles.button}
-                            onPress={() => this.props.handleClearList()}
+                            onPress={() => handleClearList()}
                         >
                             <Text style={styles.btnText}>Clear List</Text>
                         </Button>
@@ -36,16 +38,17 @@ function mapStateToProps(state) {
         todos: state
     }
 }
-
 function mapDispatchToProps(dispatch) {
     return {
-        handleClearList: () => dispatch({ type: 'CLEAR_LIST' }),
-        handleDelete: data => dispatch({ type: 'DELETE', payload: data })
-
+        handleDelete: data => dispatch(Middleware.deleteItem(data)),
+        handleClearList: () => dispatch(Middleware.clearList())
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TodoList)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TodoList);
 
 
 const styles = StyleSheet.create({
