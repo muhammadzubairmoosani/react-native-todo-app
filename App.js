@@ -8,7 +8,7 @@ import {
 } from 'native-base';
 import Textbox from './components/inputField';
 import TodoList from './components/todoList';
-import store from './store';
+import store from './store/reduser/reduser';
 import { Provider } from 'react-redux';
 
 class App extends React.Component {

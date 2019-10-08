@@ -1,13 +1,11 @@
-import Action from '../action/action'
+import Action from '../action/action';
 import firebase from '../../config/firebase';
 
-let todos = [];
+var todos = [];
 export default class Middleware {
     static addToDatabase(data) {
         return dispatch => {
-            let arr = [];
-            arr.push(data);
-            todos.concat(arr);
+            todos.push(data);
             firebase.database().ref('todos').set(todos)
             firebase
                 .database()

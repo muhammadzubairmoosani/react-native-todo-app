@@ -9,26 +9,28 @@ class TodoList extends React.Component {
         const { todos, handleDelete, handleClearList } = this.props;
         return (
             <Container>
-                <Content>
-                    {todos.map((item, index) =>
-                        <View key={index} style={styles.container}>
-                            <Text style={styles.todoText}>{item}</Text>
-                            <Button danger onPress={() => handleDelete(index)}>
-                                <Icon name='md-trash' />
+                {todos ?
+                    <Content>
+                        {todos.map((item, index) =>
+                            <View key={index} style={styles.container}>
+                                <Text style={styles.todoText}>{item}</Text>
+                                <Button danger onPress={() => handleDelete(index)}>
+                                    <Icon name='md-trash' />
+                                </Button>
+                            </View>
+                        )}
+                        {todos.length > 0 ?
+                            <Button
+                                block info
+                                style={styles.button}
+                                onPress={() => handleClearList()}
+                            >
+                                <Text style={styles.btnText}>Clear List</Text>
                             </Button>
-                        </View>
-                    )}
-                    {todos.length > 0 ?
-                        <Button
-                            block info
-                            style={styles.button}
-                            onPress={() => handleClearList()}
-                        >
-                            <Text style={styles.btnText}>Clear List</Text>
-                        </Button>
-                        : null
-                    }
-                </Content>
+                            : null
+                        }
+                    </Content>
+                    : <Text>Data is Loading</Text>}
             </Container >
         );
     }
@@ -44,12 +46,6 @@ function mapDispatchToProps(dispatch) {
         handleClearList: () => dispatch(Middleware.clearList())
     }
 }
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(TodoList);
-
 
 const styles = StyleSheet.create({
     container: {
@@ -73,3 +69,8 @@ const styles = StyleSheet.create({
         fontSize: 15,
     }
 })
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TodoList);
