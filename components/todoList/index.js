@@ -30,7 +30,7 @@ class TodoList extends React.Component {
                             : null
                         }
                     </Content>
-                    : <Spinner color="blue" />}
+                    : null}
             </Container >
         );
     }
