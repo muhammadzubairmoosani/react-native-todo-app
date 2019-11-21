@@ -1,12 +1,23 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Button, Icon, Text, Content, Container, Spinner } from 'native-base';
 import { connect } from 'react-redux';
+import { View, StyleSheet } from 'react-native';
 import Middleware from '../../store/middleware/middleware'
+import {
+    Button,
+    Icon,
+    Text,
+    Content,
+    Container,
+    Spinner
+} from 'native-base';
 
 class TodoList extends React.Component {
     render() {
-        const { todos, handleDelete, handleClearList } = this.props;
+        const {
+            todos,
+            handleDelete,
+            handleClearList
+        } = this.props;
         return (
             <Container>
                 {todos ?

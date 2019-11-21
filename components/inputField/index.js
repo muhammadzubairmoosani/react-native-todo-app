@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { View, StyleSheet } from 'react-native';
+import Middleware from '../../store/middleware/middleware';
 import {
     Form,
     Item,
@@ -7,9 +10,7 @@ import {
     Button,
     Text
 } from 'native-base';
-import { View, StyleSheet } from 'react-native';
-import { connect } from 'react-redux';
-import Middleware from '../../store/middleware/middleware'
+
 class Textbox extends React.Component {
     constructor(props) {
         super(props);
@@ -20,7 +21,7 @@ class Textbox extends React.Component {
     handleChange = text => this.setState({ value: text });
 
     handleSubmit() {
-        this.props.sendData(this.state.value);
+        this.props.todoDispatch(this.state.value);
         this.setState({ value: '' })
     }
 
@@ -30,7 +31,10 @@ class Textbox extends React.Component {
                 <Form>
                     <Item floatingLabel>
                         <Label>Add A Todo Item</Label>
-                        <Input value={this.state.value} onChangeText={(text) => this.handleChange(text)} />
+                        <Input
+                            value={this.state.value}
+                            onChangeText={(text) => this.handleChange(text)}
+                        />
                     </Item>
                 </Form>
                 <Button block primary
@@ -45,7 +49,7 @@ class Textbox extends React.Component {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        sendData: (data) => dispatch(Middleware.addToDatabase(data))
+        todoDispatch: (data) => dispatch(Middleware.addToDatabase(data))
     }
 }
 
